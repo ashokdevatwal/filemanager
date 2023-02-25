@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0390bce0b9e71d853247a693c95434cc",
+    "content-hash": "d1d1142d56902fd8743bde02adefe2fc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4521,6 +4521,9 @@
             ],
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/process/tree/v5.4.19"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
