@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\FileManager\DashboardController;
+
+
+
+Route::get('/dashboard',[DashboardController::class,'dashboard'])->middleware(['auth'])->name('dashboard');
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+require __DIR__.'/auth.php';

@@ -52,6 +52,19 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => env('CDN_SFTP_HOST' , '127.0.0.1'),
+            'port' => env('CDN_SFTP_PORT', 22),
+            'username' => env('CDN_SFTP_USERNAME', 'foo'),
+            'password' => env('CDN_SFTP_PASSWORD','foo'),
+            'visibility' => 'public',
+            // 'permPublic' => 0766, // <- this one did the trick,
+            'directoryPerm' => 0755,
+            // 'privateKey' => 'path/to/or/contents/of/privatekey',
+            'root' => env('CDN_SFTP_PATH', storage_path('app/public') ),
+            'timeout' => 10,
+        ]
 
     ],
 
