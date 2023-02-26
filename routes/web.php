@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\FileManager\DashboardController;
+use App\Http\Controllers\FileManager\ServerController;
 
 
 
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard/server-{server}',[ServerController::class,'dashboard'])->middleware(['auth'])->name('server-dashboard');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return view('welcome');})->name('home');
 
 
 require __DIR__.'/auth.php';

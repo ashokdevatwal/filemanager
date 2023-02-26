@@ -1,56 +1,57 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>File Manager Dashboard</title>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/media/image/favicon.png"/>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="/assets/vendors/bundle.css" type="text/css">
 
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
+    <!-- App styles -->
+    <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css">
+</head>
+<body class="form-membership" style="background: url(/assets/media/image/image1.jpg)">
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+
+<div class="form-wrapper">
+
+    <div id="logo">
+        <img src="/assets/media/image/logo-dark.png" alt="image">
+    </div>
+
+    <h5>Sign in</h5>
+
+    <!-- form -->
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+        <div class="form-group">
+            <input type="text" class="form-control" name="email" placeholder="Username or email" required autofocus>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" checked="" id="customCheck1">
+                <label class="custom-control-label" for="customCheck1">Remember me</label>
             </div>
+        </div>
+        <button class="btn btn-primary btn-block">Sign in</button>
+    </form>
+    <!-- ./ form -->
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
+</div>
 
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-            </div>
+<!-- Plugin scripts -->
+<script src="/assets/vendors/bundle.js"></script>
 
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+<!-- App scripts -->
+<script src="/assets/js/app.min.js"></script>
+</body>
+</html>
