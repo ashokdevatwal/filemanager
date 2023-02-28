@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Server;
+use Illuminate\Support\Facades\Crypt;
 use App\Http\Library\SSHConnection;
+
+use Redirect;
 
 class ServerController extends Controller
 {
@@ -18,38 +21,39 @@ class ServerController extends Controller
 
     public function dashboard(Server $server) {
 
-        $connection = (new SSHConnection())
-            ->to($server->host)
-            ->onPort(22)
-            ->as($server->username)
-            ->withPassword('Tractor@12345')
-         // ->withPrivateKey($privateKeyPath)
-         // ->timeout(0)
-            ->connect();
+        $server->connect();
 
-        $command = $connection->run('df -h');
+        $total_disk_space = $server->getDiskTotalSpace();
+        $init_tree        = $server -> storage_tree();
+        $init_dir_tree    = $server->getDirectoryTree( "$server->storage_root{$init_tree[0]['name']}" );
 
-        return $command->getOutput();  // 'Hello World'
+        // $password = "eyJpdiI6IitIQ0VlLzB0dEsvd3VsTFRZOXlqTXc9PSIsInZhbHVlIjoibUZYVktLMWVFSTAzM2lldTdza0FHUT09IiwibWFjIjoiNzE4ZTc1ZWIyNzliNzhmYzRmMDkwYzM5NDAwNjNlY2I4MTJkNzY4MjVlNjQ2YmE5M2Q4NzUxZjA1MDI2ODIyNSIsInRhZyI6IiJ9";
 
+        // $total = (int)filter_var( $total_disk_space['total'], FILTER_SANITIZE_NUMBER_INT);
+        // $used  = (int)filter_var( $total_disk_space['used'], FILTER_SANITIZE_NUMBER_INT);
 
-        // $path = base_path().'/vendor/bin/envoy';
+        // return $percentage = ( $used / $total ) * 100;
+        
+        return view('filemanager.server.dashboard')->with([
+            'server'            => $server,
+            'total_disk_space'  => $total_disk_space,
+            'init_tree'         => $init_tree,
+            'init_dir_tree'     => $init_dir_tree
+        ]);
+    }
 
-        // $process = new Process(['php', $path,'run', 'disk-space']);
-        // $process->setWorkingDirectory( base_path() );
-        // $process->run();
+    public function addServer(Request $request) {
 
-        // // executes after the command finishes
-        // if (!$process->isSuccessful()) {
-        //     throw new ProcessFailedException($process);
-        // }
+        $server  = new Server;
+        $server->title = $request->title;
+        $server->host = $request->host;
+        $server->username = $request->username;
+        $server->password =  Crypt::encryptString( $request->password );
+        $server->public_key = $request->public_key;
+        $server->private_key = $request->private_key;
+        $server->storage_root = $request->storage_root;
+        $server->save();
 
-        // $output = explode("[root@192.46.212.165]: ", $process->getOutput());
-        // $output = array_values( array_filter(  $output ) );
-        // $output = end($output);
-
-        // $output = array_values( array_filter( explode( ' ', $output) ) ); 
-        // return $output;
-
-        return $server;
+        return Redirect::back();
     }
 }

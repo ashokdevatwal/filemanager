@@ -18,8 +18,10 @@ class CreateServersTable extends Migration
             $table->string('title');
             $table->string('host');
             $table->string('username');
-            $table->string('private_key');
-            $table->string('public_key');
+            $table->string('password')->nullable();
+            $table->string('private_key')->nullable();
+            $table->string('public_key')->nullable();
+            $table->string('storage_root');
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

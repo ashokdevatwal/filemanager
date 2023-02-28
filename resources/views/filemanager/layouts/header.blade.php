@@ -161,11 +161,9 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link profile-nav-link dropdown-toggle" title="User menu"
                             data-toggle="dropdown">
-                            <span class="mr-2 d-sm-inline d-none">Bony Gidden</span>
+                            <span class="mr-2 d-sm-inline d-none">{{ Auth::user()->name }}</span>
                             <figure class="avatar avatar-sm">
-                                <img src="../../assets/media/image/user/man_avatar3.jpg"
-                                        class="rounded-circle"
-                                        alt="avatar">
+                                <img src="../../assets/media/image/user/man_avatar3.jpg" class="rounded-circle" alt="avatar">
                             </figure>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-big">
@@ -175,28 +173,14 @@
                                     <img src="../../assets/media/image/user/man_avatar3.jpg"
                                             class="rounded-circle" alt="image">
                                 </figure>
-                                <h5 class="mb-0">Bony Gidden</h5>
+                                <h5 class="mb-0">{{ Auth::user()->name }}</h5>
                             </div>
                             <div class="list-group list-group-flush">
                                 <a href="#" class="list-group-item" data-sidebar-target="#settings">Settings</a>
                                 <form method="POST" action="{{ route('logout')}}" id="#logout" >
                                     @csrf
-                                    <a href="#" onclick="" class="list-group-item text-danger"
-                                    data-sidebar-target="#settings">Sign Out!</a>
+                                    <a href="#" onclick="this.parentNode.submit();" class="list-group-item text-danger">Sign Out!</a>
                                 </form>
-                            </div>
-                            <div class="pb-0 p-4">
-                                <div class="mb-4">
-                                    <h6 class="d-flex justify-content-between">
-                                        Completed Tasks
-                                        <span class="float-right">%68</span>
-                                    </h6>
-                                    <div class="progress" style="height:5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar"
-                                                style="width: 68%;" aria-valuenow="68" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </li>
