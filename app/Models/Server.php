@@ -53,8 +53,9 @@ class Server extends Model
         return ParseConsoleOutput::directoryTree( $command->getOutput() );
     }
 
-
-    
-
-
+    public function createDirectory($path) {
+        $command = $this->connection->run("mkdir $path");
+        return true;
+    }
+ 
 }

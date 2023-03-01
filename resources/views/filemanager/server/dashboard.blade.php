@@ -3,27 +3,39 @@
 
 <div class="row">
     <div class="col-xl-3 files-sidebar">
+        
+        <div class="header-search-form mb-2">
+            <form>
+                <div class="input-group">
+                    <input type="text" class="form-control" value="{{ $server->storage_root }}">
+                    <div class="input-group-append">
+                        <button class="btn header-search-close-btn">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="card border-0">
             <h6 class="card-title">{{ $server->title }} - {{ $server->host }} </h6>
             <div id="files"></div>
             <h6 class="">Storage</h6>
-            <div class="progress" style="height: 5px">
-                <div class="progress-bar" role="progressbar" style="width: {{ $total_disk_space[ 'percentage'] }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress" style="height:15px">
+                <div class="progress-bar" role="progressbar" style="width:{{ $total_disk_space[ 'percentage'] }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
     </div>
     <div class="col-xl-9">
         <div class="content-title mt-0 mb-1 pb-1">
-            <h4> <i class="ti-folder"></i> {{$init_tree[0]['name']}}</h4>
+            <h4> <i class="ti-folder"></i> {{ $server->storage_root }}</h4>
         </div>
         <div class="d-md-flex justify-content-between">
             <ul class="list-inline mb-0">
                 <li class="list-inline-item mb-0">
-                    <a href="#" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown">
-                        Add
-                    </a>
+                    <a href="#" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown"> Add </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">New Folder</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#newFolder">New Folder</a>
                         <a class="dropdown-item" href="#">New File</a>
                     </div>
                 </li>
@@ -81,8 +93,9 @@
                     </th>
                     <th>Name</th>
                     <th>Modified</th>
-                    <th>Label</th>
-                    <th>Members</th>
+                    <th>User</th>
+                    <th>Group</th>
+                    <th>Permissions</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -104,38 +117,13 @@
                             </span>
                         </a>
                     </td>
-                    <td>3/9/19, 2:40PM</td>
+                    <td>{{ $item['month'] }} {{ $item['day'] }}, {{ $item['time'] }}</td>
+                    <td>{{ $item['user'] }}</td>
+                    <td>{{ $item['group'] }}</td>
                     <td>
-                        <div class="badge bg-info-bright text-info">Design</div>
+                        <div class="badge bg-info-bright text-info">{{ $item['permissions'] }}</div>
                     </td>
-                    <td>
-                        <div class="avatar-group">
-                            <figure class="avatar avatar-sm" title="Lisle Essam"
-                                    data-toggle="tooltip">
-                                <img src="../../assets/media/image/user/women_avatar2.jpg"
-                                        class="rounded-circle"
-                                        alt="image">
-                            </figure>
-                            <figure class="avatar avatar-sm" title="Baxie Roseblade"
-                                    data-toggle="tooltip">
-                                <img src="../../assets/media/image/user/man_avatar5.jpg"
-                                        class="rounded-circle"
-                                        alt="image">
-                            </figure>
-                            <figure class="avatar avatar-sm" title="Jo Hugill"
-                                    data-toggle="tooltip">
-                                <img src="../../assets/media/image/user/man_avatar1.jpg"
-                                        class="rounded-circle"
-                                        alt="image">
-                            </figure>
-                            <figure class="avatar avatar-sm" title="Cullie Philcott"
-                                    data-toggle="tooltip">
-                                <img src="../../assets/media/image/user/women_avatar5.jpg"
-                                        class="rounded-circle"
-                                        alt="image">
-                            </figure>
-                        </div>
-                    </td>
+                     
                     <td class="text-right">
                         <div class="dropdown">
                             <a href="#" class="btn btn-floating" data-toggle="dropdown">
@@ -163,6 +151,32 @@
 </div>
 
 
+<div class="modal" tabindex="-1" role="dialog" id="newFolder">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Folder</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form method="post" action="{{ route('new-folder-server') }}">
+        @csrf
+        <input type="hidden" name="server_id" value="{{$server->id}}" />
+      <div class="modal-body">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="path" value="{{ $server->storage_root }}">
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('style')

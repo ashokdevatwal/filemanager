@@ -24,8 +24,8 @@ class ServerController extends Controller
         $server->connect();
 
         $total_disk_space = $server->getDiskTotalSpace();
-        $init_tree        = $server -> storage_tree();
-        $init_dir_tree    = $server->getDirectoryTree( "$server->storage_root{$init_tree[0]['name']}" );
+        $init_tree        = $server->storage_tree();
+        $init_dir_tree    = $server->getDirectoryTree( "$server->storage_root" );
 
         // $password = "eyJpdiI6IitIQ0VlLzB0dEsvd3VsTFRZOXlqTXc9PSIsInZhbHVlIjoibUZYVktLMWVFSTAzM2lldTdza0FHUT09IiwibWFjIjoiNzE4ZTc1ZWIyNzliNzhmYzRmMDkwYzM5NDAwNjNlY2I4MTJkNzY4MjVlNjQ2YmE5M2Q4NzUxZjA1MDI2ODIyNSIsInRhZyI6IiJ9";
 
@@ -53,6 +53,15 @@ class ServerController extends Controller
         $server->private_key = $request->private_key;
         $server->storage_root = $request->storage_root;
         $server->save();
+
+        return Redirect::back();
+    }
+
+    public function addFolder( Request $request ) {
+        $server  =  Server::where('id', $request->server_id)->first();
+
+        $server->connect();
+        $server->createDirectory( $request->path );
 
         return Redirect::back();
     }

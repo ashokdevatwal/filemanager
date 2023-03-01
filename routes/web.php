@@ -21,6 +21,7 @@ use App\Http\Controllers\FileManager\ServerController;
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->middleware(['auth'])->name('dashboard');
 Route::get('/dashboard/server-{server}',[ServerController::class,'dashboard'])->middleware(['auth'])->name('server-dashboard');
 Route::post('/dashboard/add-server',[ServerController::class,'addServer'])->middleware(['auth'])->name('add-server');
+Route::post('/dashboard/add-folder-server',[ServerController::class,'addFolder'])->middleware(['auth'])->name('new-folder-server');
 
 Route::get('/', function () { return view('welcome');})->name('home');
 
