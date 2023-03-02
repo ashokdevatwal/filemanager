@@ -7,10 +7,10 @@
         <div class="header-search-form mb-2">
             <form>
                 <div class="input-group">
-                    <input type="text" class="form-control" value="{{ $server->storage_root }}">
+                    <input type="text" class="form-control" name="current_dir" value="{{ $current_directory }}">
                     <div class="input-group-append">
-                        <button class="btn header-search-close-btn">
-                            <i data-feather="x"></i>
+                        <button class="btn header-search-close-btn" type="button">
+                           <i class="ti-home"></i>
                         </button>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
         <div class="card border-0">
             <h6 class="card-title">{{ $server->title }} - {{ $server->host }} </h6>
             <div id="files"></div>
-            <h6 class="">Storage</h6>
+            <h6 class="">Storage <span class=" badge bg-primary-bright text-primary float-right">{{ $total_disk_space[ 'used'] }} / {{ $total_disk_space[ 'total'] }}</span></h6>
             <div class="progress" style="height:15px">
                 <div class="progress-bar" role="progressbar" style="width:{{ $total_disk_space[ 'percentage'] }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
@@ -28,15 +28,21 @@
     </div>
     <div class="col-xl-9">
         <div class="content-title mt-0 mb-1 pb-1">
-            <h4> <i class="ti-folder"></i> {{ $server->storage_root }}</h4>
+            <h4> <i class="ti-folder"></i> {{ $server->getDirectory( $current_directory ) }}</h4>
         </div>
         <div class="d-md-flex justify-content-between">
             <ul class="list-inline mb-0">
                 <li class="list-inline-item mb-0">
+                    <form>
+                        <input type="hidden" name="current_dir" value="{{ $server->parentDirectory( $current_directory ) }} " />
+                        <button type="submit" class="btn btn-outline-primary"><i class="ti-arrow-left mr-2"></i> Back</button>
+                    </form>
+                </li>
+                <li class="list-inline-item mb-0">
                     <a href="#" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown"> Add </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#newFolder">New Folder</a>
-                        <a class="dropdown-item" href="#">New File</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#newFile">New File</a>
                     </div>
                 </li>
                 <li class="list-inline-item mb-0">
@@ -163,10 +169,12 @@
       <form method="post" action="{{ route('new-folder-server') }}">
         @csrf
         <input type="hidden" name="server_id" value="{{$server->id}}" />
+        <input type="hidden" name="current_dir" value="{{  $current_directory }}" />
       <div class="modal-body">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="path" value="{{ $server->storage_root }}">
+                <input type="text" class="form-control" name="path" placeholder="Folder Name" value="">
+                 <small id="emailHelp" class="form-text text-muted">{{  $current_directory }}</small>
             </div>
       </div>
       <div class="modal-footer">
@@ -177,6 +185,36 @@
     </div>
   </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="newFile">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form method="post" action="{{ route('new-file-server') }}">
+        @csrf
+        <input type="hidden" name="server_id" value="{{$server->id}}" />
+        <input type="hidden" name="current_dir" value="{{  $current_directory }}" />
+      <div class="modal-body">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Folder Name" value="">
+                 <small id="emailHelp" class="form-text text-muted">{{  $current_directory }}</small>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('style')

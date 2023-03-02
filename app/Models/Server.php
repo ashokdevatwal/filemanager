@@ -15,7 +15,11 @@ class Server extends Model
 
     protected $connection = null;
 
-    public function connect(){
+
+    // find . -type d | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/| - \1/"
+
+
+    public function connect() {
         $this->connection = (new SSHConnection())
             ->to($this->host)
             ->onPort(22)
@@ -27,7 +31,7 @@ class Server extends Model
 
     }
 
-    public function getPassword(){
+    public function getPassword() {
         try {
           return  $decrypted = Crypt::decryptString($this->password);
         } catch (DecryptException $e) {
@@ -41,13 +45,13 @@ class Server extends Model
         return ParseConsoleOutput::totalDiskSpace( $command->getOutput() );
     }
 
-    public function storage_tree(){
+    public function storage_tree() {
         $command = $this->connection->run("ls -l $this->storage_root");
 
         return ParseConsoleOutput::directoryTree( $command->getOutput() );
     }
 
-    public function getDirectoryTree( $path ){
+    public function getDirectoryTree( $path ) {
         $command = $this->connection->run("ls -l $path");
 
         return ParseConsoleOutput::directoryTree( $command->getOutput() );
@@ -55,6 +59,32 @@ class Server extends Model
 
     public function createDirectory($path) {
         $command = $this->connection->run("mkdir $path");
+        return true;
+    }
+
+    public function getDirectory( $path ) {
+        $directory_array = explode("/", $path );
+        $directory_array = array_filter( $directory_array , function($value) {
+            return ($value !== null && $value !== false && $value !== ''); 
+        });
+
+        return end( $directory_array );
+    }
+
+    public function parentDirectory( $path ) {
+        
+        $directory_array = explode("/", $path );
+        $directory_array = array_filter( $directory_array , function($value) {
+            return ($value !== null && $value !== false && $value !== ''); 
+        });
+
+        array_pop( $directory_array );
+        
+        return "/".implode('/', $directory_array );
+    }
+
+    public function createFile($path) {
+        $command = $this->connection->run("touch $path");
         return true;
     }
  
