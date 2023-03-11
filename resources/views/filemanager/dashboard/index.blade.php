@@ -83,7 +83,7 @@
                                     <i class="ti-more-alt"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="{{route('server-dashboard', [ 'server' => $server->id ])}}" class="dropdown-item">Connect</a>
+                                    <a href="{{route('connect-server', [ 'server' => $server->id ])}}" class="dropdown-item">Connect</a>
                                     <a href="#" class="dropdown-item" data-sidebar-target="#folder-info">View Detail</a>
                                     <a href="#" class="dropdown-item">Edit</a>
                                     <a href="#" class="dropdown-item">Delete</a>

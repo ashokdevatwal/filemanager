@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Crypt;
 use App\Http\Library\SSHConnection;
 
 use Redirect;
+use Session;
+use Config;
 
 class ServerController extends Controller
 {
@@ -19,8 +21,24 @@ class ServerController extends Controller
     // ext-mcrypt
     // ext-gmp 
 
-    public function dashboard(Request $request, Server $server) {
+    public function connect(Request $request, Server $server) {
+        $server->connect();
 
+        // Store Connection 
+        Session::put('server-connection', $server );
+
+        // Setup Configuration 
+        Config::set('filesystems.sftp.host',     $server->host   );
+        Config::set('filesystems.sftp.username', $server->username );
+        Config::set('filesystems.sftp.password', $server->getPassword() );
+        Config::set('filesystems.sftp.root',     $server->storage_root   );
+
+        return Redirect::route('server-dashboard');
+    }
+
+    public function dashboard(Request $request) {
+
+        $server = Session::get('server-connection');
 
         $server->connect();
 
@@ -65,7 +83,8 @@ class ServerController extends Controller
     }
 
     public function addFolder( Request $request ) {
-        $server  =  Server::where('id', $request->server_id)->first();
+        
+        $server = Session::get('server-connection');
 
         if( $request->has('current_dir') ) {
             $current_directory =  $request->current_dir;
@@ -78,14 +97,13 @@ class ServerController extends Controller
         else 
             $new_dir_path = $current_directory.'/'.$request->path;
 
-        $server->connect();
         $server->createDirectory( $new_dir_path );
 
         return Redirect::back();
     }
 
     public function addFile( Request $request ) {
-        $server  =  Server::where('id', $request->server_id)->first();
+        $server = Session::get('server-connection');
 
         if( $request->has('current_dir') ) {
             $current_directory =  $request->current_dir;
@@ -98,9 +116,14 @@ class ServerController extends Controller
         else 
             $new_file_path = $current_directory.'/'.$request->name;
 
-        $server->connect();
         $server->createFile( $new_file_path );
 
         return Redirect::back();
+    }
+
+    public function downloadFile(Request $request) {
+        $server = Session::get('server-connection');
+
+
     }
 }

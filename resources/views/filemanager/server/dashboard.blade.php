@@ -145,7 +145,7 @@
                                 <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">View
                                     Details</a>
                                 <a href="#" class="dropdown-item">Share</a>
-                                <a href="#" class="dropdown-item">Download</a>
+                                <a href="{{ $item['type'] == 'file' ? route('download-file-server',[ 'server' => $server->id, 'current_dir' => $current_directory.'/'.$item['name'] ]) : '#'}}" class="dropdown-item">Download</a>
                                 <a href="#" class="dropdown-item">Copy to</a>
                                 <a href="#" class="dropdown-item">Move to</a>
                                 <a href="#" class="dropdown-item">Rename</a>

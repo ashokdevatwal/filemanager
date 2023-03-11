@@ -18,12 +18,21 @@ use App\Http\Controllers\FileManager\ServerController;
 
 
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->middleware(['auth'])->name('dashboard');
-Route::get('/dashboard/server-{server}',[ServerController::class,'dashboard'])->middleware(['auth'])->name('server-dashboard');
-// Add Server 
-Route::post('/dashboard/add-server',[ServerController::class,'addServer'])->middleware(['auth'])->name('add-server');
-// Create 
-Route::post('/dashboard/add-folder-server',[ServerController::class,'addFolder'])->middleware(['auth'])->name('new-folder-server');
-Route::post('/dashboard/add-file-server',[ServerController::class,'addFile'])->middleware(['auth'])->name('new-file-server');
+Route::get('/connect/server-{server}', [ ServerController::class, 'connect' ])->name('connect-server');
+
+Route::group(['middleware'=> ['server_connection'] ], function() {
+    Route::get('/dashboard/server',[ServerController::class,'dashboard'])->middleware(['auth'])->name('server-dashboard');
+    // Add Server 
+    Route::post('/dashboard/add-server',[ServerController::class,'addServer'])->middleware(['auth'])->name('add-server');
+    // Create 
+    Route::post('/dashboard/add-folder-server',[ServerController::class,'addFolder'])->middleware(['auth'])->name('new-folder-server');
+    Route::post('/dashboard/add-file-server',[ServerController::class,'addFile'])->middleware(['auth'])->name('new-file-server');
+
+    // Action 
+    Route::get('/dashboard/action-server-{server}-download',[ServerController::class,'downloadFile'])->middleware(['auth'])->name('download-file-server');
+});
+
+
 
 Route::get('/', function () { return view('welcome');})->name('home');
 
