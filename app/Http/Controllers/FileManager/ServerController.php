@@ -35,8 +35,6 @@ class ServerController extends Controller
 
         $init_dir_tree    = $server->getDirectoryTree( $current_directory );
  
-        // $password = "eyJpdiI6IitIQ0VlLzB0dEsvd3VsTFRZOXlqTXc9PSIsInZhbHVlIjoibUZYVktLMWVFSTAzM2lldTdza0FHUT09IiwibWFjIjoiNzE4ZTc1ZWIyNzliNzhmYzRmMDkwYzM5NDAwNjNlY2I4MTJkNzY4MjVlNjQ2YmE5M2Q4NzUxZjA1MDI2ODIyNSIsInRhZyI6IiJ9";
-
         // $total = (int)filter_var( $total_disk_space['total'], FILTER_SANITIZE_NUMBER_INT);
         // $used  = (int)filter_var( $total_disk_space['used'], FILTER_SANITIZE_NUMBER_INT);
 

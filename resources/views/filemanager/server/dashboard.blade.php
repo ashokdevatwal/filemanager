@@ -35,7 +35,13 @@
                 <li class="list-inline-item mb-0">
                     <form>
                         <input type="hidden" name="current_dir" value="{{ $server->parentDirectory( $current_directory ) }} " />
-                        <button type="submit" class="btn btn-outline-primary"><i class="ti-arrow-left mr-2"></i> Back</button>
+                        <button type="submit" class="btn btn-outline-light"><i class="ti-arrow-left mr-2"></i> Back</button>
+                    </form>
+                </li>
+                <li class="list-inline-item mb-0">
+                    <form>
+                        <input type="hidden" name="current_dir" value="{{ $current_directory }} " />
+                        <button type="submit" class="btn btn-outline-light"><i class="ti-loop mr-2"></i> Refresh</button>
                     </form>
                 </li>
                 <li class="list-inline-item mb-0">
@@ -111,7 +117,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <a href="#" class="d-flex align-items-center">
+                        <a href="?current_dir={{$current_directory}}/{{ $item['name'] }}" class="d-flex align-items-center">
                             <figure class="avatar avatar-sm mr-3">
                                 <span class="avatar-title @if( $item['type'] == 'folder') bg-warning @endif text-black-50 rounded-pill">
                                     <i class="ti-{{ $item['type'] }}"></i>
