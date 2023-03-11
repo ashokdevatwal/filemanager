@@ -117,7 +117,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <a href="?current_dir={{$current_directory}}/{{ $item['name'] }}" class="d-flex align-items-center">
+                        <a href="{{  $item['type'] == 'folder' ? '?current_dir='.$current_directory.'/'.$item['name'] : '#' }}" class="d-flex align-items-center">
                             <figure class="avatar avatar-sm mr-3">
                                 <span class="avatar-title @if( $item['type'] == 'folder') bg-warning @endif text-black-50 rounded-pill">
                                     <i class="ti-{{ $item['type'] }}"></i>
