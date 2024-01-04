@@ -1,6 +1,8 @@
 Laravel SSH Filemanager
 ======================================================
 
+![GitHub License](https://img.shields.io/github/license/ashokdevatwal/filemanager)
+
 
 Installation
 ------------
